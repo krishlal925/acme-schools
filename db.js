@@ -25,31 +25,50 @@ const sync = async()=>{
   `
   client.query(SQL);
 
-  createSchool("CalPoly");
-  createSchool("Fresno State");
-  createSchool("Standford");
-  createStudent("Samantha");
-  createStudent("Dennis");
-  createStudent("Shanil");
+  const [CalPoly, FresnoState, Standford] = await Promise.all([
+    createSchool("CalPoly"),
+    createSchool("Fresno State"),
+    createSchool("Standford")
+  ])
+
+
+  Promise.all([
+    createStudent("Samantha", Standford.id),
+    createStudent("Dennis", CalPoly.id),
+    createStudent("Shanil", FresnoState.id)
+  ])
+
+
+  console.log(await readStudents())
 }
 
 //read schools
-
-
-//add schools
-const createSchool = async(name)=>{
-  const SQL ='INSERT INTO schools(name) VALUES($1) returning *';
-  return(await client.query(SQL, [name]))
+const readSchools = async()=>{
+  SQL = 'SELECT * FROM schools';
+  return(await client.query(SQL)).rows
+}
+//read students
+const readStudents = async()=>{
+  SQL = 'SELECT * FROM students';
+  return(await client.query(SQL)).rows
 }
 
-// add students
-const createStudent =  async (name)=>{
-  SQL = 'INSERT INTO students(name) VALUES($1) returning *';
-  return(await client.query(SQL, [name]))
+//create schools
+const createSchool = async(name)=>{
+  const SQL ='INSERT INTO schools(name) VALUES($1) returning *';
+  return(await client.query(SQL, [name])).rows[0]
+}
+
+//create students
+const createStudent = async (name, id)=>{
+  SQL = 'INSERT INTO students(name, school_id) VALUES($1, $2) returning *';
+  return(await client.query(SQL, [name, id])).rows[0]
 }
 
 module.exports = {
   sync,
   createSchool,
-  createStudent
+  createStudent,
+  readSchools,
+  readStudents
 }
