@@ -35,7 +35,8 @@ const sync = async()=>{
   Promise.all([
     createStudent("Samantha", Standford.id),
     createStudent("Dennis", CalPoly.id),
-    createStudent("Shanil", FresnoState.id)
+    createStudent("Shanil", FresnoState.id),
+    createStudent("Nikhil")
   ])
 
 

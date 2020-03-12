@@ -1,0 +1,17 @@
+.top{
+  display: flex;
+  border: solid black 1pt;
+}
+
+.box{
+  flex: 1;
+  display: flex;
+  border: solid black 1pt;
+  padding: 2px;
+  justify-content: center;
+}
+
+.bottom{
+  display: flex;
+  border: solid black 1pt;
+}
