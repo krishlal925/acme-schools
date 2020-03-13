@@ -7,8 +7,8 @@ const CreateSchool = ()=>{
     <div className = "box">
       <form>
         <h2>Create School</h2>
-        <input></input>
-        <button>Create</button>
+        <input className="input"></input>
+        <button className="input">Create</button>
       </form>
     </div>
   );

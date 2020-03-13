@@ -16,17 +16,19 @@ app.get('/', (req, res, next)=>{
   res.sendFile(path.join(__dirname,'index.html'))
 });
 
-//get students
+//Read students
 app.get('/api/students', (req,res,next)=>{
   db.readStudents()
   .then(response => res.send(response))
 })
 
-//get schools
+//Read schools
 app.get('/api/schools', (req,res,next)=>{
   db.readSchools()
   .then(response => res.send(response))
 })
+
+//Create Schools
 
 //Set port and start server
 const PORT = process.env.port || 3000;

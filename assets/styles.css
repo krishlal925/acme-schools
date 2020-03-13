@@ -11,7 +11,21 @@
   justify-content: center;
 }
 
+.box2{
+  //flex: 1;
+  //display: flex;
+  border: solid black 1pt;
+  padding: 5px;
+  justify-content: center;
+  width: 250px;
+}
 .bottom{
   display: flex;
   border: solid black 1pt;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.input{
+  width: 100%;
 }

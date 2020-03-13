@@ -5,9 +5,9 @@ const CreateStudent = ()=>{
     <div className= "box">
       <form>
         <h2>Create Student</h2>
-        <input></input>
-        <select></select>
-        <button>Create</button>
+        <input className="input"></input>
+        <select className="input"></select>
+        <button className="input">Create</button>
       </form>
 
     </div>
