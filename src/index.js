@@ -47,6 +47,19 @@ const App = () => {
   const [schools, setSchools] = useState([]);
   const [students, setStudents] = useState([]);
   let unenrolledStudents = students.filter(student => student.school_id === null);
+
+  const createSchool = async (name)=>{
+    const response = (await Axios.post('/api/schools', {name})).data
+    setSchools([...schools, response])
+
+  }
+
+  const createStudent = async(name, id)=>{
+    const response = (await Axios.post('/api/students', {name, id})).data
+    setStudents([...students, response])
+    console.log(" this is the response from the server through axios: ",response)
+  }
+
   useEffect(()=>{
 
     Promise.all([Axios.get('/api/schools'), Axios.get('/api/students') ])
@@ -73,8 +86,8 @@ const App = () => {
 
       <div className= "container">
         <div className="top">
-          <CreateStudent/>
-          <CreateSchool />
+          <CreateStudent createStudent= {createStudent} schools={schools}/>
+          <CreateSchool createSchool = {createSchool}/>
         </div>
         <div className="bottom" >
           <UnenrolledStudents students= {unenrolledStudents}/>

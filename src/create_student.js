@@ -1,12 +1,28 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-const CreateStudent = ()=>{
+const CreateStudent = ({createStudent, schools})=>{
+  const [name, setName] = useState('');
+  const [school_id, setSchool]= useState('')
+
+  const onSubmit = (ev)=>{
+    ev.preventDefault()
+    createStudent(name, school_id)
+    console.log(`create student form sending name: ${name} and school id: ${school_id}`)
+  }
   return(
     <div className= "box">
-      <form>
+      <form onSubmit={onSubmit}>
         <h2>Create Student</h2>
-        <input className="input"></input>
-        <select className="input"></select>
+        <input value= {name} onChange={ev=> setName(ev.target.value)} className="input"></input>
+        <select value={school_id} onChange= {ev=>setSchool(ev.target.value) } className="input">
+          {
+            schools.map(school=>{
+              return(
+              <option value={school.id} key={school.id}> {school.name}</option>
+              )
+            })
+          }
+        </select>
         <button className="input">Create</button>
       </form>
 

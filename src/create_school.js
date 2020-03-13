@@ -1,13 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 
-const CreateSchool = ()=>{
+const CreateSchool = ({createSchool})=>{
+
+  const [name,setName] = useState('');
+
+  const onSubmit = (ev)=>{
+    ev.preventDefault();
+    createSchool(name);
+
+  }
 
   return (
     <div className = "box">
-      <form>
+      <form onSubmit={onSubmit} >
         <h2>Create School</h2>
-        <input className="input"></input>
+        <input value = {name} onChange = {(ev)=>setName(ev.target.value)} className="input"></input>
         <button className="input">Create</button>
       </form>
     </div>

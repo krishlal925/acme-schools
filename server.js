@@ -29,6 +29,17 @@ app.get('/api/schools', (req,res,next)=>{
 })
 
 //Create Schools
+app.post('/api/schools', (req,res,next)=>{
+  db.createSchool(req.body)
+  .then(response => res.send(response))
+})
+
+//Create Students
+app.post('/api/students', (req,res,next)=>{
+  console.log(req.body)
+  db.createStudent(req.body)
+  .then(response => res.send(response))
+})
 
 //Set port and start server
 const PORT = process.env.port || 3000;
