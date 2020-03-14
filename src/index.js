@@ -27,9 +27,9 @@ const UpdateStudent = ({deleteStudent, student, updateStudent })=>{
         <form onSubmit= {onSubmit}>
           <h2>Update {student.name}</h2>
           <input value={name} onChange= {(ev)=>setName(ev.target.value)}></input>
-          <button onClick= {onSubmit}> <a href='#'>Update</a></button>
+          <button> Update</button>
         </form>
-        <button className="DeleteButton" onClick={()=>deleteStudent(student.id)}><a href="#">Delete Student</a></button>
+        <button className="DeleteButton" onClick={()=>deleteStudent(student.id)}>Delete Student</button>
 
       </div>
     </div>
@@ -53,14 +53,17 @@ const App = () => {
   }
 
   const deleteStudent = async(id)=>{
+        //sends user back to homepage after deleting student
+        window.location.hash = '#';
+
     const response = (await Axios.delete(`/api/students/${id}`)).data
+    console.log("response from axios delete command:  ",response)
+
     const newArray = students.filter(student => student.id !== response.id)
     setStudents([...newArray])
 
-    // I was trying to reload the main page after deleting a student... created a link in the button instead
-    //setParams({view: "#"})
-    //console.log("params: ",params)
-    return('success')
+
+
   }
 
   const unenrollStudent = async(id)=>{
@@ -76,6 +79,9 @@ const App = () => {
     console.log("response from axios after sending update request", response);
     const newArray = students.filter(student => student.id !== id);
     setStudents([...newArray, response])
+
+    //sends user back to homepage after updating student
+    window.location.hash = '#';
   }
 
   useEffect(()=>{
