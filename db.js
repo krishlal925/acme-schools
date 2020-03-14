@@ -56,16 +56,20 @@ const readStudents = async()=>{
 
 //create schools
 const createSchool = async({name})=>{
-  console.log(name)
   const SQL ='INSERT INTO schools(name) VALUES($1) returning *';
   return(await client.query(SQL, [name])).rows[0]
 }
 
 //create students
 const createStudent = async ({name, id})=>{
-  console.log(`@db...student name: ${name}, school id: ${id}`)
   SQL = 'INSERT INTO students(name, school_id) VALUES($1, $2) returning *';
   return(await client.query(SQL, [name, id])).rows[0]
+}
+
+//delete student
+const deleteStudent = async(id)=>{
+  const SQL = 'DELETE FROM students WHERE id = $1 returning *';
+  return(await client.query(SQL, [id])).rows[0];
 }
 
 module.exports = {
@@ -73,5 +77,6 @@ module.exports = {
   createSchool,
   createStudent,
   readSchools,
-  readStudents
+  readStudents,
+  deleteStudent
 }

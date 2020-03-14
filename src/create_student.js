@@ -15,6 +15,8 @@ const CreateStudent = ({createStudent, schools})=>{
         <h2>Create Student</h2>
         <input value= {name} onChange={ev=> setName(ev.target.value)} className="input"></input>
         <select value={school_id} onChange= {ev=>setSchool(ev.target.value) } className="input">
+          <option>Pick a school</option>
+          <option value ={null}>Unenrolled</option>
           {
             schools.map(school=>{
               return(

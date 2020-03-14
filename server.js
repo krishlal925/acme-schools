@@ -41,6 +41,11 @@ app.post('/api/students', (req,res,next)=>{
   .then(response => res.send(response))
 })
 
+app.delete('/api/students/:id', (req,res,next)=>{
+  db.deleteStudent(req.params.id)
+  .then(response => res.send(response))
+});
+
 //Set port and start server
 const PORT = process.env.port || 3000;
 
