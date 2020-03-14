@@ -11,7 +11,22 @@ const {useState, useEffect} =React;
 
 const root = document.querySelector('#root');
 
+const UpdateStudent = ({deleteStudent, id})=>{
 
+  return(
+    <div>
+      <div className = "updateStudentBox">
+        <form>
+          <h2>Update Student</h2>
+          <input></input>
+          <button></button>
+        </form>
+        <button className="DeleteButton" onClick={()=>deleteStudent(id)}><a href="#">Delete Student</a></button>
+
+      </div>
+    </div>
+  )
+}
 
 
 const App = () => {
@@ -36,8 +51,17 @@ const App = () => {
     const newArray = students.filter(student => student.id !== response.id)
     setStudents([...newArray])
     console.log(" axios returned response of deleted student: ",response)
+
+    // I was trying to reload the main page after deleting a student... created a link in the button instead
+    //setParams({view: "#"})
+    //console.log("params: ",params)
+    return('success')
+
   }
 
+  const unenrollStudent = async()=>{
+    console.log("working on unenrolling student...")
+  }
   useEffect(()=>{
 
     Promise.all([Axios.get('/api/schools'), Axios.get('/api/students') ])
@@ -58,6 +82,7 @@ const App = () => {
 
   // used for routing
   const [ params, setParams ] = useState(qs.parse(window.location.hash.slice(1)));
+  console.log('params: ', params)
   useEffect(()=> {
     window.addEventListener('hashchange', ()=> {
       setParams(qs.parse(window.location.hash.slice(1)));
@@ -67,11 +92,11 @@ const App = () => {
 
   return (
     <div>
-      <div><h1>Acme Schools </h1></div>
+      <div><h1> <a href='#' > Acme Schools </a></h1></div>
       <div>{schools.length} Schools </div>
       <div>{students.length} Students</div>
       {
-        view === "student" && ( <UpdateStudent/>)
+        view === "student" && ( <UpdateStudent deleteStudent={deleteStudent} id ={params.id}/>)
       }
       {
         !view && (
@@ -86,7 +111,7 @@ const App = () => {
                 schools.map(school=>{
                   return(
                     <SchoolCards school = {school} students ={students.filter(student=> student.school_id === school.id)}
-                      deleteStudent= {deleteStudent}/>
+                      unenrollStudent= {unenrollStudent}/>
                   )
                 })
               }

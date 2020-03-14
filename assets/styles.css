@@ -29,3 +29,7 @@
 .input{
   width: 100%;
 }
+
+.DeleteButton {
+  color: red;
+}

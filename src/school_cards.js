@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SchoolCards = ({school, students, deleteStudent})=>{
+const SchoolCards = ({school, students, unenrollStudent})=>{
   return(
     <div className="box2">
       <h2> {school.name}</h2>
@@ -9,7 +9,7 @@ const SchoolCards = ({school, students, deleteStudent})=>{
           students.map(student=>{
             return(
               <li key = {student.id}> <a href={`#view=student&id=${student.id}`} >{student.name} </a>
-                <button onClick= {()=>deleteStudent(student.id)}>x</button>
+                <button onClick= {()=>unenrollStudent(student.id)}>Unenroll</button>
                </li>
             )
           })
