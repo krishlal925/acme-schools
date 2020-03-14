@@ -11,17 +11,25 @@ const {useState, useEffect} =React;
 
 const root = document.querySelector('#root');
 
-const UpdateStudent = ({deleteStudent, id})=>{
+const UpdateStudent = ({deleteStudent, student, updateStudent })=>{
+
+  console.log("printing student that was passed into UpdateStudent component: ",student)
+  const [name, setName]= useState(student.name)
+
+  const onSubmit=(ev)=>{
+    ev.preventDefault();
+    updateStudent(student.id, name);
+  }
 
   return(
     <div>
       <div className = "updateStudentBox">
-        <form>
-          <h2>Update Student</h2>
-          <input></input>
-          <button></button>
+        <form onSubmit= {onSubmit}>
+          <h2>Update {student.name}</h2>
+          <input value={name} onChange= {(ev)=>setName(ev.target.value)}></input>
+          <button onClick= {onSubmit}> <a href='#'>Update</a></button>
         </form>
-        <button className="DeleteButton" onClick={()=>deleteStudent(id)}><a href="#">Delete Student</a></button>
+        <button className="DeleteButton" onClick={()=>deleteStudent(student.id)}><a href="#">Delete Student</a></button>
 
       </div>
     </div>
@@ -37,31 +45,39 @@ const App = () => {
   const createSchool = async (name)=>{
     const response = (await Axios.post('/api/schools', {name})).data
     setSchools([...schools, response])
-
   }
 
   const createStudent = async(name, id)=>{
     const response = (await Axios.post('/api/students', {name, id})).data
     setStudents([...students, response])
-    console.log(" this is the response from the server through axios: ",response)
   }
 
   const deleteStudent = async(id)=>{
     const response = (await Axios.delete(`/api/students/${id}`)).data
     const newArray = students.filter(student => student.id !== response.id)
     setStudents([...newArray])
-    console.log(" axios returned response of deleted student: ",response)
 
     // I was trying to reload the main page after deleting a student... created a link in the button instead
     //setParams({view: "#"})
     //console.log("params: ",params)
     return('success')
-
   }
 
-  const unenrollStudent = async()=>{
+  const unenrollStudent = async(id)=>{
     console.log("working on unenrolling student...")
+    const response = (await Axios.put(`/api/students/unenroll/${id}`, {school_id: null})).data
+    const newArray = students.filter(student=> student.id !== id)
+    setStudents([...newArray, response])
   }
+
+  const updateStudent = async(id , name, school_id )=>{
+    console.log("working on updating student....")
+    const response = (await Axios.put(`/api/students/update/${id}`, {name, school_id })).data
+    console.log("response from axios after sending update request", response);
+    const newArray = students.filter(student => student.id !== id);
+    setStudents([...newArray, response])
+  }
+
   useEffect(()=>{
 
     Promise.all([Axios.get('/api/schools'), Axios.get('/api/students') ])
@@ -96,7 +112,7 @@ const App = () => {
       <div>{schools.length} Schools </div>
       <div>{students.length} Students</div>
       {
-        view === "student" && ( <UpdateStudent deleteStudent={deleteStudent} id ={params.id}/>)
+        view === "student" && ( <UpdateStudent deleteStudent={deleteStudent} student = {(students.filter(student => student.id ===params.id))[0]} updateStudent= {updateStudent}/>)
       }
       {
         !view && (
@@ -106,7 +122,7 @@ const App = () => {
               <CreateSchool createSchool = {createSchool}/>
             </div>
             <div className="bottom" >
-              <UnenrolledStudents students= {unenrolledStudents}/>
+              <UnenrolledStudents students= {unenrolledStudents} UpdateStudent={UpdateStudent} />
               {
                 schools.map(school=>{
                   return(

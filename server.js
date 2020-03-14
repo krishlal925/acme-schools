@@ -36,15 +36,30 @@ app.post('/api/schools', (req,res,next)=>{
 
 //Create Students
 app.post('/api/students', (req,res,next)=>{
-  console.log(req.body)
   db.createStudent(req.body)
   .then(response => res.send(response))
 })
 
+//Delete Student
 app.delete('/api/students/:id', (req,res,next)=>{
   db.deleteStudent(req.params.id)
   .then(response => res.send(response))
 });
+
+//Update enrollment of student
+app.put('/api/students/unenroll/:student_id', (req,res,next)=>{
+  db.unenrollStudent(req.params.student_id)
+  .then(response => res.send(response))
+  .catch(next =>console.log(next))
+})
+
+//Update student
+app.put('/api/students/update/:id', (req,res,next)=>{
+  console.log("student id recieved by server: ", req.params.id)
+  console.log('req.body.name: ', req.body.name)
+  db.updateStudent(req.params.id, req.body.name)
+  .then(response => res.send(response))
+})
 
 //Set port and start server
 const PORT = process.env.port || 3000;
