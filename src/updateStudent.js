@@ -4,7 +4,7 @@ const UpdateStudent = ({deleteStudent, student, updateStudent, schools })=>{
 
   console.log("printing student that was passed into UpdateStudent component: ",student)
   const [name, setName]= useState(student.name)
-  const [schoolID, setSchoolID] = useState((schools.filter(school=>school.id ===student.school_id)).id)
+  const [schoolID, setSchoolID] = useState((schools.filter(school=>school.id ===student.school_id))[0].id)
 
   const onSubmit=(ev)=>{
     ev.preventDefault();
