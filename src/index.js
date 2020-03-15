@@ -6,72 +6,12 @@ import CreateStudent from './create_student';
 import qs from 'qs';
 import SchoolCards from './school_cards';
 import UnenrolledStudents from './unenrolled_students';
+import UpdateStudent from './updateStudent';
+import UpdateSchool from './updateSchool';
 
 const {useState, useEffect} =React;
 
 const root = document.querySelector('#root');
-
-const UpdateStudent = ({deleteStudent, student, updateStudent, schools })=>{
-
-  console.log("printing student that was passed into UpdateStudent component: ",student)
-  const [name, setName]= useState(student.name)
-  const [schoolID, setSchoolID] = useState((schools.filter(school=>school.id ===student.school_id)).id)
-
-  const onSubmit=(ev)=>{
-    ev.preventDefault();
-    console.log(`sending student.id: ${student.id}, name: ${name}, schoolID: ${schoolID} `)
-    updateStudent(student.id, name, schoolID);
-  }
-
-  return(
-    <div>
-      <div className = "updateStudentBox">
-        <form onSubmit= {onSubmit}>
-          <h2>Update {student.name}</h2>
-          <input value={name} onChange= {(ev)=>setName(ev.target.value)}></input>
-          <select value ={schoolID} onChange={(ev)=>setSchoolID(ev.target.value)}>
-            <option>--Pick a school--</option>
-            {
-              schools.map(school =>{
-                return(
-                  <option value= {school.id} key = {school.id}> {school.name}</option>
-                )
-              })
-            }
-          </select>
-          <button> Update</button>
-        </form>
-        <button className="DeleteButton" onClick={()=>deleteStudent(student.id)}>Delete Student</button>
-
-      </div>
-    </div>
-  )
-}
-
-const UpdateSchool = ({deleteSchool, school, updateSchool })=>{
-  console.log("printing School that was passed into UpdateStudent component: ",school)
-  const [name, setName]= useState(school.name)
-
-  const onSubmit=(ev)=>{
-    ev.preventDefault();
-    console.log(`sending name: ${name}, schoolID: ${school.id} `)
-    updateSchool(school.id, name);
-  }
-
-  return(
-    <div>
-      <div className = "updateStudentBox">
-        <form onSubmit= {onSubmit}>
-          <h2>Update {school.name}</h2>
-          <input value={name} onChange= {(ev)=>setName(ev.target.value)}></input>
-          <button> Update</button>
-        </form>
-        <button className="DeleteButton" onClick={()=>deleteSchool(school.id)}>Delete School</button>
-
-      </div>
-    </div>
-  )
-}
 
 const App = () => {
   const [schools, setSchools] = useState([]);
