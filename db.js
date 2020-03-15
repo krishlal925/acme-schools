@@ -80,9 +80,9 @@ const unenrollStudent= async(id)=>{
 }
 
 //Update Student
-const updateStudent = async(id, name)=>{
-  const SQL = "UPDATE students SET name= $2 WHERE id=$1 returning *";
-  return (await client.query(SQL, [id, name])).rows[0]
+const updateStudent = async(id, name, school_id)=>{
+  const SQL = "UPDATE students SET name= $2, school_id = $3 WHERE id=$1 returning *";
+  return (await client.query(SQL, [id, name, school_id])).rows[0]
 
 }
 

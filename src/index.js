@@ -11,14 +11,16 @@ const {useState, useEffect} =React;
 
 const root = document.querySelector('#root');
 
-const UpdateStudent = ({deleteStudent, student, updateStudent })=>{
+const UpdateStudent = ({deleteStudent, student, updateStudent, schools })=>{
 
   console.log("printing student that was passed into UpdateStudent component: ",student)
   const [name, setName]= useState(student.name)
+  const [schoolID, setSchoolID] = useState((schools.filter(school=>school.id ===student.school_id)).id)
 
   const onSubmit=(ev)=>{
     ev.preventDefault();
-    updateStudent(student.id, name);
+    console.log(`sending student.id: ${student.id}, name: ${name}, schoolID: ${schoolID} `)
+    updateStudent(student.id, name, schoolID);
   }
 
   return(
@@ -27,6 +29,15 @@ const UpdateStudent = ({deleteStudent, student, updateStudent })=>{
         <form onSubmit= {onSubmit}>
           <h2>Update {student.name}</h2>
           <input value={name} onChange= {(ev)=>setName(ev.target.value)}></input>
+          <select value ={schoolID} onChange={(ev)=>setSchoolID(ev.target.value)}>
+            {
+              schools.map(school =>{
+                return(
+                  <option value= {school.id} key = {school.id}> {school.name}</option>
+                )
+              })
+            }
+          </select>
           <button> Update</button>
         </form>
         <button className="DeleteButton" onClick={()=>deleteStudent(student.id)}>Delete Student</button>
@@ -61,9 +72,6 @@ const App = () => {
 
     const newArray = students.filter(student => student.id !== response.id)
     setStudents([...newArray])
-
-
-
   }
 
   const unenrollStudent = async(id)=>{
@@ -98,9 +106,7 @@ const App = () => {
 
   console.log(schools);
   console.log(students);
-
   console.log("unenrolled students:", unenrolledStudents)
-
 
   // used for routing
   const [ params, setParams ] = useState(qs.parse(window.location.hash.slice(1)));
@@ -118,7 +124,7 @@ const App = () => {
       <div>{schools.length} Schools </div>
       <div>{students.length} Students</div>
       {
-        view === "student" && ( <UpdateStudent deleteStudent={deleteStudent} student = {(students.filter(student => student.id ===params.id))[0]} updateStudent= {updateStudent}/>)
+        view === "student" && ( <UpdateStudent deleteStudent={deleteStudent} student = {(students.filter(student => student.id ===params.id))[0]} updateStudent= {updateStudent} schools = {schools}/>)
       }
       {
         !view && (
@@ -133,7 +139,7 @@ const App = () => {
                 schools.map(school=>{
                   return(
                     <SchoolCards school = {school} students ={students.filter(student=> student.school_id === school.id)}
-                      unenrollStudent= {unenrollStudent}/>
+                      unenrollStudent= {unenrollStudent} unenrolledStudents = {unenrolledStudents}/>
                   )
                 })
               }

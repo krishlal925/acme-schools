@@ -56,8 +56,8 @@ app.put('/api/students/unenroll/:student_id', (req,res,next)=>{
 //Update student
 app.put('/api/students/update/:id', (req,res,next)=>{
   console.log("student id recieved by server: ", req.params.id)
-  console.log('req.body.name: ', req.body.name)
-  db.updateStudent(req.params.id, req.body.name)
+  console.log('req.body: ', req.body)
+  db.updateStudent(req.params.id, req.body.name, req.body.school_id)
   .then(response => res.send(response))
 })
 
