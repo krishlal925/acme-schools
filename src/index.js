@@ -30,6 +30,7 @@ const UpdateStudent = ({deleteStudent, student, updateStudent, schools })=>{
           <h2>Update {student.name}</h2>
           <input value={name} onChange= {(ev)=>setName(ev.target.value)}></input>
           <select value ={schoolID} onChange={(ev)=>setSchoolID(ev.target.value)}>
+            <option>--Pick a school--</option>
             {
               schools.map(school =>{
                 return(
@@ -92,6 +93,15 @@ const App = () => {
     window.location.hash = '#';
   }
 
+  const enrollStudent = async(studentID, schoolID)=>{
+    console.log('studentID given to axios: ', studentID)
+    const response = (await Axios.put(`/api/students/enroll/${studentID}`, {schoolID})).data
+    console.log(response);
+    const newArray = students.filter(student => student.id !== studentID)
+    setStudents([...newArray, response])
+
+  }
+
   useEffect(()=>{
 
     Promise.all([Axios.get('/api/schools'), Axios.get('/api/students') ])
@@ -139,7 +149,7 @@ const App = () => {
                 schools.map(school=>{
                   return(
                     <SchoolCards school = {school} students ={students.filter(student=> student.school_id === school.id)}
-                      unenrollStudent= {unenrollStudent} unenrolledStudents = {unenrolledStudents}/>
+                      unenrollStudent= {unenrollStudent} unenrolledStudents = {unenrolledStudents} enrollStudent= {enrollStudent}/>
                   )
                 })
               }

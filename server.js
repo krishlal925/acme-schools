@@ -61,6 +61,12 @@ app.put('/api/students/update/:id', (req,res,next)=>{
   .then(response => res.send(response))
 })
 
+//enroll student from school card
+app.put('/api/students/enroll/:id', (req,res,next)=>{
+  console.log('req.body recieved at server',req.body)
+  db.enrollStudent(req.params.id, req.body.schoolID)
+  .then(response =>res.send(response))
+})
 //Set port and start server
 const PORT = process.env.port || 3000;
 

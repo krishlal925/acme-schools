@@ -76,14 +76,21 @@ const deleteStudent = async(id)=>{
 const unenrollStudent= async(id)=>{
   console.log("student id: ", id)
   const SQL=  'UPDATE students SET school_id = NULL WHERE id = $1 returning *';
-  return(await client.query(SQL, [id])).rows[0]
+  return(await client.query(SQL, [id])).rows[0];
 }
 
 //Update Student
 const updateStudent = async(id, name, school_id)=>{
   const SQL = "UPDATE students SET name= $2, school_id = $3 WHERE id=$1 returning *";
-  return (await client.query(SQL, [id, name, school_id])).rows[0]
+  return (await client.query(SQL, [id, name, school_id])).rows[0];
 
+}
+
+// Enroll student
+const enrollStudent = async(studentID, schoolID)=>{
+  console.log(`at the DB... studentID: ${studentID}, schoolID: ${schoolID}`)
+  const SQL = 'UPDATE students SET school_id = $2 WHERE id= $1 returning *';
+  return(await client.query(SQL, [studentID, schoolID])).rows[0];
 }
 
 module.exports = {
@@ -94,5 +101,6 @@ module.exports = {
   readStudents,
   deleteStudent,
   unenrollStudent,
-  updateStudent
+  updateStudent,
+  enrollStudent
 }
