@@ -46,6 +46,12 @@ app.delete('/api/students/:id', (req,res,next)=>{
   .then(response => res.send(response))
 });
 
+//Delete School
+app.delete('/api/schools/:id', (req,res,next)=>{
+  db.deleteSchool(req.params.id)
+  .then(response => res.send(response))
+});
+
 //Update enrollment of student
 app.put('/api/students/unenroll/:student_id', (req,res,next)=>{
   db.unenrollStudent(req.params.student_id)
@@ -58,6 +64,14 @@ app.put('/api/students/update/:id', (req,res,next)=>{
   console.log("student id recieved by server: ", req.params.id)
   console.log('req.body: ', req.body)
   db.updateStudent(req.params.id, req.body.name, req.body.school_id)
+  .then(response => res.send(response))
+})
+
+//Update school
+app.put('/api/schools/update/:id', (req,res,next)=>{
+  console.log("school id recieved by server: ", req.params.id)
+  console.log('req.body: ', req.body)
+  db.updateSchool(req.params.id, req.body.name)
   .then(response => res.send(response))
 })
 

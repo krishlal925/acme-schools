@@ -12,7 +12,7 @@ const SchoolCards = ({school, students, unenrollStudent, unenrolledStudents, enr
 
   return(
     <div className="box2">
-      <h2> {school.name}</h2>
+      <h2> <a href={`#view=school&id=${school.id}`}>{school.name}</a></h2>
       <select onChange= {(ev)=>onChange(ev)}>
         <option>--enroll a student--</option>
         {

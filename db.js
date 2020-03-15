@@ -71,6 +71,11 @@ const deleteStudent = async(id)=>{
   const SQL = 'DELETE FROM students WHERE id = $1 returning *';
   return(await client.query(SQL, [id])).rows[0];
 }
+//delete school
+const deleteSchool = async(id)=>{
+  const SQL = 'DELETE FROM schools WHERE id = $1 returning *';
+  return(await client.query(SQL, [id])).rows[0];
+}
 
 //unenroll student
 const unenrollStudent= async(id)=>{
@@ -83,6 +88,13 @@ const unenrollStudent= async(id)=>{
 const updateStudent = async(id, name, school_id)=>{
   const SQL = "UPDATE students SET name= $2, school_id = $3 WHERE id=$1 returning *";
   return (await client.query(SQL, [id, name, school_id])).rows[0];
+
+}
+
+//Update School
+const updateSchool = async(id, name)=>{
+  const SQL = "UPDATE schools SET name= $2 WHERE id=$1 returning *";
+  return (await client.query(SQL, [id, name])).rows[0];
 
 }
 
@@ -102,5 +114,7 @@ module.exports = {
   deleteStudent,
   unenrollStudent,
   updateStudent,
-  enrollStudent
+  enrollStudent,
+  updateSchool,
+  deleteSchool
 }

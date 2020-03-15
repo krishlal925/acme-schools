@@ -48,6 +48,30 @@ const UpdateStudent = ({deleteStudent, student, updateStudent, schools })=>{
   )
 }
 
+const UpdateSchool = ({deleteSchool, school, updateSchool })=>{
+  console.log("printing School that was passed into UpdateStudent component: ",school)
+  const [name, setName]= useState(school.name)
+
+  const onSubmit=(ev)=>{
+    ev.preventDefault();
+    console.log(`sending name: ${name}, schoolID: ${school.id} `)
+    updateSchool(school.id, name);
+  }
+
+  return(
+    <div>
+      <div className = "updateStudentBox">
+        <form onSubmit= {onSubmit}>
+          <h2>Update {school.name}</h2>
+          <input value={name} onChange= {(ev)=>setName(ev.target.value)}></input>
+          <button> Update</button>
+        </form>
+        <button className="DeleteButton" onClick={()=>deleteSchool(school.id)}>Delete School</button>
+
+      </div>
+    </div>
+  )
+}
 
 const App = () => {
   const [schools, setSchools] = useState([]);
@@ -75,6 +99,17 @@ const App = () => {
     setStudents([...newArray])
   }
 
+  const deleteSchool = async(id)=>{
+    //sends user back to homepage after deleting student
+    window.location.hash = '#';
+
+    const response = (await Axios.delete(`/api/schools/${id}`)).data
+    console.log("response from axios delete command:  ",response)
+
+    const newArray = schools.filter(school => school.id !== response.id)
+    setSchools([...newArray])
+  }
+
   const unenrollStudent = async(id)=>{
     console.log("working on unenrolling student...")
     const response = (await Axios.put(`/api/students/unenroll/${id}`, {school_id: null})).data
@@ -88,6 +123,17 @@ const App = () => {
     console.log("response from axios after sending update request", response);
     const newArray = students.filter(student => student.id !== id);
     setStudents([...newArray, response])
+
+    //sends user back to homepage after updating student
+    window.location.hash = '#';
+  }
+
+  const updateSchool = async(id , name )=>{
+    console.log("working on updating school....")
+    const response = (await Axios.put(`/api/schools/update/${id}`, {name})).data
+    console.log("response from axios after sending update request", response);
+    const newArray = schools.filter(school => school.id !== id);
+    setSchools([...newArray, response])
 
     //sends user back to homepage after updating student
     window.location.hash = '#';
@@ -133,6 +179,9 @@ const App = () => {
       <div><h1> <a href='#' > Acme Schools </a></h1></div>
       <div>{schools.length} Schools </div>
       <div>{students.length} Students</div>
+      {
+        view=== 'school' && (<UpdateSchool deleteSchool = {deleteSchool} school={(schools.filter(school=>school.id === params.id))[0]} updateSchool= {updateSchool}/>)
+      }
       {
         view === "student" && ( <UpdateStudent deleteStudent={deleteStudent} student = {(students.filter(student => student.id ===params.id))[0]} updateStudent= {updateStudent} schools = {schools}/>)
       }
